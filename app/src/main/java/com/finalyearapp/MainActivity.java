@@ -1,10 +1,12 @@
 package com.finalyearapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button login;
     EditText email,password;
+    TextView signup;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     @Override
@@ -34,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
         email = findViewById(R.id.main_email);
         password = findViewById(R.id.main_password);
+        signup = findViewById(R.id.main_signup);
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,SignupActivity.class);
+                startActivity(intent);
+            }
+        });
 
         login = findViewById(R.id.main_sign_in);
         login.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     password.setError("Password Required");
                 }
                 else if(password.getText().toString().trim().length()<6){
-                    password.setError("Valid Password Required");
+                    password.setError("Min. 6 Char Password Required");
                 }
                 else {
                     System.out.println("Login Successfully");
@@ -59,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(MainActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
                     Snackbar.make(view, "Login Successfully", Snackbar.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(MainActivity.this,DashboardActivity.class);
+                    startActivity(intent);
+
                 }
             }
         });
