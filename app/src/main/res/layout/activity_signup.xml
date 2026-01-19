@@ -133,12 +133,20 @@
 
             </RadioGroup>
 
+            <Spinner
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_below="@id/signup_gender"
+                android:id="@+id/signup_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <CheckBox
                 app:buttonTint="@color/blue"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 android:text="Accpet Terms &amp; Conditions"
                 android:id="@+id/signup_terms"
-                android:layout_below="@id/signup_gender"
+                android:layout_below="@id/signup_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

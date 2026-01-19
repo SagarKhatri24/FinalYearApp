@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+
 public class SignupActivity extends AppCompatActivity {
 
     Button signup;
@@ -30,7 +35,12 @@ public class SignupActivity extends AppCompatActivity {
     RadioGroup gender;
     CheckBox terms;
     String sGender;
-    
+
+    Spinner spinner;
+    //String[] cityArray = {"Select City","Ahmedabad","Vadodara","Surat","Rajkot"};
+    ArrayList<String> cityArray;
+    String sCity = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +60,42 @@ public class SignupActivity extends AppCompatActivity {
         signup = findViewById(R.id.signup_sign_up);
         login = findViewById(R.id.signup_signin);
         terms = findViewById(R.id.signup_terms);
+
+        spinner = findViewById(R.id.signup_city);
+
+        cityArray = new ArrayList<>();
+        cityArray.add("Ahmedabad");
+        cityArray.add("Gandhinagar");
+        cityArray.add("Demo");
+        cityArray.add("Rajkot");
+        cityArray.add("Anad");
+
+        cityArray.remove(2);
+        cityArray.set(3,"Anand");
+        cityArray.add(0,"Select City");
+
+        ArrayAdapter adapter = new ArrayAdapter(SignupActivity.this, android.R.layout.simple_list_item_1,cityArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i == 0){
+                    sCity = "";
+                }
+                else {
+                    //sCity = cityArray[i];
+                    sCity = cityArray.get(i);
+                    Toast.makeText(SignupActivity.this, sCity, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         gender = findViewById(R.id.signup_gender);
 
@@ -104,6 +150,9 @@ public class SignupActivity extends AppCompatActivity {
                 }
                 else if(gender.getCheckedRadioButtonId() == -1){
                     Toast.makeText(SignupActivity.this, "Please Select Gender", Toast.LENGTH_SHORT).show();
+                }
+                else if(sCity == ""){
+                    Toast.makeText(SignupActivity.this, "Please Select City", Toast.LENGTH_SHORT).show();
                 }
                 else if(!terms.isChecked()){
                     Toast.makeText(SignupActivity.this, "Please Accpet Terms & Conditions", Toast.LENGTH_SHORT).show();
