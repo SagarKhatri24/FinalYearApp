@@ -44,7 +44,7 @@
                 <EditText
                     style="@style/edit_15"
                     android:id="@+id/main_email"
-                    android:hint="Email"
+                    android:hint="Email/Contact No."
                     android:inputType="textEmailAddress" />
 
             </androidx.cardview.widget.CardView>
