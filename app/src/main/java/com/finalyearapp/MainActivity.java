@@ -1,6 +1,7 @@
 package com.finalyearapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     TextView signup;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     SQLiteDatabase db;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        sp = getSharedPreferences(ConstantSp.PREF,MODE_PRIVATE);
 
         db = openOrCreateDatabase("FinalApp.db",MODE_PRIVATE,null);
         String tableQuery = "CREATE TABLE IF NOT EXISTS USERS(USERID INTEGER PRIMARY KEY AUTOINCREMENT,NAME VARCHAR(100),EMAIL VARCHAR(50),CONTACT BIGINT(10),PASSWORD VARCHAR(20),GENDER VARCHAR(10),CITY VARCHAR(50))";
@@ -74,6 +78,24 @@ public class MainActivity extends AppCompatActivity {
                     String selectQuery = "SELECT * FROM USERS WHERE (EMAIL='"+email.getText().toString()+"' OR CONTACT='"+email.getText().toString()+"') AND PASSWORD='"+password.getText().toString()+"' ";
                     Cursor cursor = db.rawQuery(selectQuery,null);
                     if(cursor.getCount()>0) {
+                        while (cursor.moveToNext()){
+                            String sId = cursor.getString(0);
+                            String sName = cursor.getString(1);
+                            String sEmail = cursor.getString(2);
+                            String sContact = cursor.getString(3);
+                            String sPassword = cursor.getString(4);
+                            String sGender = cursor.getString(5);
+                            String sCity = cursor.getString(6);
+
+                            sp.edit().putString(ConstantSp.USERID,sId).commit();
+                            sp.edit().putString(ConstantSp.NAME,sName).commit();
+                            sp.edit().putString(ConstantSp.EMAIL,sEmail).commit();
+                            sp.edit().putString(ConstantSp.CONTACT,sContact).commit();
+                            sp.edit().putString(ConstantSp.PASSWORD,sPassword).commit();
+                            sp.edit().putString(ConstantSp.GENDER,sGender).commit();
+                            sp.edit().putString(ConstantSp.CITY,sCity).commit();
+
+                        }
                         System.out.println("Login Successfully");
                         Log.d("LOGIN", "Login Successfully");
                         Log.e("LOGIN", "Login Successfully");
