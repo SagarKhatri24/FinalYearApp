@@ -15,4 +15,22 @@
         android:layout_gravity="center"
         style="@style/text_20"/>
 
+    <Button
+        android:id="@+id/dashboard_profile"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Profile"
+        style="@style/button_15"/>
+
+    <Button
+        android:id="@+id/dashboard_logout"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Logout"
+        style="@style/button_15"/>
+
+    <Button
+        android:id="@+id/dashboard_delete_account"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Delete Account"
+        style="@style/button_15"/>
+
 </LinearLayout>
