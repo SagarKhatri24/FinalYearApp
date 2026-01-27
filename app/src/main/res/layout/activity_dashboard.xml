@@ -33,4 +33,10 @@
         android:text="Delete Account"
         style="@style/button_15"/>
 
+    <Button
+        android:id="@+id/dashboard_category"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Category Using ListView"
+        style="@style/button_15"/>
+
 </LinearLayout>

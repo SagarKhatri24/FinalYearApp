@@ -46,10 +46,12 @@ public class SplashActivity extends AppCompatActivity {
                 if(sp.getString(ConstantSp.USERID,"").equals("")){
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 else{
                     Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         },3000);
