@@ -1,5 +1,7 @@
 package com.finalyearapp;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,20 +47,22 @@ public class CategoryActivity extends AppCompatActivity {
 
     ArrayList<CategoryList> arrayList;
 
+    SQLiteDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+
+
+
         setContentView(R.layout.activity_category);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         gridView = findViewById(R.id.category_listview);
 
         //ArrayAdapter adapter = new ArrayAdapter(CategoryActivity.this, android.R.layout.simple_list_item_1,nameArray);
+
+
+
 
         arrayList = new ArrayList<>();
         for(int i=0;i<nameArray.length;i++){

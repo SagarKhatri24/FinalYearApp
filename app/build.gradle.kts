@@ -4,9 +4,8 @@ plugins {
 
 android {
     namespace = "com.finalyearapp"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
+
 
     defaultConfig {
         applicationId = "com.finalyearapp"
