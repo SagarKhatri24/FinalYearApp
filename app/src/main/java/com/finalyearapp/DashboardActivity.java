@@ -21,7 +21,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     TextView name;
     SharedPreferences sp;
-    Button profile,logout,deleteAccount,category,categoryRecycler;
+    Button profile,logout,deleteAccount,category,categoryRecycler, cart;
     SQLiteDatabase db;
 
     @Override
@@ -49,6 +49,18 @@ public class DashboardActivity extends AppCompatActivity {
         deleteAccount = findViewById(R.id.dashboard_delete_account);
         category = findViewById(R.id.dashboard_category);
         categoryRecycler = findViewById(R.id.dashboard_recycler);
+        cart = findViewById(R.id.dashboard_cart);
+
+
+
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DashboardActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         categoryRecycler.setOnClickListener(new View.OnClickListener() {
             @Override

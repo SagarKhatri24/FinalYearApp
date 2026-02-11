@@ -45,4 +45,10 @@
         android:text="Category Using Recyclerview"
         style="@style/button_15"/>
 
+    <Button
+        android:id="@+id/dashboard_cart"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Cart"
+        style="@style/button_15"/>
+
 </LinearLayout>
