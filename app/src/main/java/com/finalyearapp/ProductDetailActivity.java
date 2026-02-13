@@ -1,5 +1,8 @@
 package com.finalyearapp;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,7 +21,7 @@ import com.bumptech.glide.Glide;
 public class ProductDetailActivity extends AppCompatActivity {
 
     TextView vendorName, name, afterDiscount, price, discount, cartQty;
-    ImageView imageView, cart, plus, minus;
+    ImageView imageView, cart, plus, minus, wishlist_empty, wishlist_filled, wishlist;
     LinearLayout cart_layout;
 
     SharedPreferences sp;
@@ -28,6 +31,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     String userId;
     int productId;
 
+    boolean isWishlist = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         db.execSQL("CREATE TABLE IF NOT EXISTS product(productId INTEGER PRIMARY KEY AUTOINCREMENT,subcategoryId INTEGER(10),vendorName VARCHAR(100), productName VARCHAR(100),price VARCHAR(100),afterDiscount VARCHAR(100),discount VARCHAR(5), image VARCHAR)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS cart(cartId INTEGER PRIMARY KEY AUTOINCREMENT, userId VARCHAR(20), productId VARCHAR(20), qty VARCHAR(10))");
+
+        String wishlistTable = "CREATE TABLE IF NOT EXISTS wishlist(wishlistId INTEGER PRIMARY KEY AUTOINCREMENT, userId VARCHAR(20), productId VARCHAR(20))";
+        db.execSQL(wishlistTable);
 
         sp = getSharedPreferences(ConstantSp.PREF, MODE_PRIVATE);
 
@@ -64,6 +71,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         plus = findViewById(R.id.product_detail_cart_plus);
         minus = findViewById(R.id.product_detail_cart_minus);
         cartQty = findViewById(R.id.product_detail_cart_qty);
+
+//        wishlist_empty = findViewById(R.id.product_detail_wishlist_empty);
+//        wishlist_filled = findViewById(R.id.product_detail_wishlist_fill);
+
+        wishlist = findViewById(R.id.product_detail_wishlist);
 
         // Set product details
         vendorName.setText(sp.getString(ConstantSp.PRODUCTVENDORNAME, ""));
@@ -99,7 +111,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             cursor.close();
 
             cartQty.setText(String.valueOf(qty));
-            cart.setVisibility(View.GONE);
+            cart.setVisibility(GONE);
             cart_layout.setVisibility(View.VISIBLE);
 
             Toast.makeText(this, "Added To Cart", Toast.LENGTH_SHORT).show();
@@ -128,7 +140,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 db.execSQL(deleteItem);
 
                 cart.setVisibility(View.VISIBLE);
-                cart_layout.setVisibility(View.GONE);
+                cart_layout.setVisibility(GONE);
                 qty = 0;
 
             } else {
@@ -141,7 +153,46 @@ public class ProductDetailActivity extends AppCompatActivity {
                 cartQty.setText(String.valueOf(qty));
             }
         });
+
+
+//        wishlist_empty.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                wishlist_empty.setVisibility(GONE);
+//                wishlist_filled.setVisibility(VISIBLE);
+//                Toast.makeText(ProductDetailActivity.this, "Added to Wishlist", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        wishlist_filled.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                wishlist_filled.setVisibility(GONE);
+//                wishlist_empty.setVisibility(VISIBLE);
+//                Toast.makeText(ProductDetailActivity.this, "Removed from Wishlist", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
+        wishlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isWishlist){
+                    isWishlist = false;
+                    wishlist.setImageResource(R.drawable.wishlist_empty);
+                    Toast.makeText(ProductDetailActivity.this, "Removed from Wishlist", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    isWishlist = true;
+                    wishlist.setImageResource(R.drawable.wishlist_fill);
+                    Toast.makeText(ProductDetailActivity.this, "Added to Wishlist", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
     }
+
 
 
     private void checkProductInCart() {
@@ -158,12 +209,12 @@ public class ProductDetailActivity extends AppCompatActivity {
                 cartQty.setText(String.valueOf(qty));
             }
 
-            cart.setVisibility(View.GONE);
+            cart.setVisibility(GONE);
             cart_layout.setVisibility(View.VISIBLE);
 
         } else {
             cart.setVisibility(View.VISIBLE);
-            cart_layout.setVisibility(View.GONE);
+            cart_layout.setVisibility(GONE);
         }
 
         cursor.close();

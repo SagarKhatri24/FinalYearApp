@@ -53,6 +53,15 @@
                     android:id="@+id/custom_product_discount"
                     style="@style/text_12" />
 
+                <ImageView
+                    android:id="@+id/custom_product_wishlist"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:gravity="end"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:src="@drawable/wishlist_empty"
+                    />
+
             </LinearLayout>
 
         </LinearLayout>

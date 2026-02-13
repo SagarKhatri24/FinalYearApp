@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyHolder
     Context context;
     ArrayList<ProductList> arrayList;
     SharedPreferences sp;
+
+    boolean isWishlist = false;
 
     public ProductAdapter(Context context, ArrayList<ProductList> arrayList) {
         this.context = context;
@@ -41,7 +44,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyHolder
     public class MyHolder extends RecyclerView.ViewHolder {
 
         TextView vendorName,name,afterDiscount,price,discount;
-        ImageView imageView;
+        ImageView imageView, wishlist;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -51,6 +54,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyHolder
             price = itemView.findViewById(R.id.custom_product_price);
             discount = itemView.findViewById(R.id.custom_product_discount);
             imageView = itemView.findViewById(R.id.custom_product_image);
+            wishlist = itemView.findViewById(R.id.custom_product_wishlist);
         }
     }
 
@@ -82,6 +86,23 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyHolder
                 context.startActivity(intent);
             }
         });
+
+        holder.wishlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isWishlist){
+                    isWishlist = false;
+                    holder.wishlist.setImageResource(R.drawable.wishlist_empty);
+                    Toast.makeText(context, "Removed from Wishlist", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    isWishlist = true;
+                    holder.wishlist.setImageResource(R.drawable.wishlist_fill);
+                    Toast.makeText(context, "Added to Wishlist", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     @Override
