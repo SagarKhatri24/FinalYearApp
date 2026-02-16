@@ -93,6 +93,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
 
         checkProductInCart();
+        checkItemInWishlist();
 
 
         cart.setOnClickListener(view -> {
@@ -108,7 +109,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 db.execSQL(insertItem);
             }
 
-            cursor.close();
+
 
             cartQty.setText(String.valueOf(qty));
             cart.setVisibility(GONE);
@@ -181,9 +182,17 @@ public class ProductDetailActivity extends AppCompatActivity {
                     isWishlist = false;
                     wishlist.setImageResource(R.drawable.wishlist_empty);
                     Toast.makeText(ProductDetailActivity.this, "Removed from Wishlist", Toast.LENGTH_SHORT).show();
+                    String deleteWishlist = "DELETE FROM wishlist WHERE userId='"
+                            + userId + "' AND productId='" + productId + "'";
+                    db.execSQL(deleteWishlist);
                 }
                 else{
                     isWishlist = true;
+
+                    String insertWishlist = "INSERT INTO wishlist VALUES (NULL, '"+userId+"', '"+productId+"')";
+                    db.execSQL(insertWishlist);
+
+
                     wishlist.setImageResource(R.drawable.wishlist_fill);
                     Toast.makeText(ProductDetailActivity.this, "Added to Wishlist", Toast.LENGTH_SHORT).show();
                 }
@@ -193,6 +202,22 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     }
 
+    private void checkItemInWishlist() {
+        String checkWishlist = "SELECT * FROM wishlist WHERE userId='"
+                + userId + "' AND productId='" + productId + "'";
+
+        Cursor cursor = db.rawQuery(checkWishlist, null);
+
+        if(cursor.getCount() > 0){
+            isWishlist = true;
+            wishlist.setImageResource(R.drawable.wishlist_fill);
+        }
+        else{
+            isWishlist = false;
+            wishlist.setImageResource(R.drawable.wishlist_empty);
+        }
+
+    }
 
 
     private void checkProductInCart() {
