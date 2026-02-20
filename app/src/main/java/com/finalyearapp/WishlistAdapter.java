@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.MyHold
     Context context;
     ArrayList<WishlistList> arrayList;
     SQLiteDatabase db;
+    Boolean isWishlist = true;
 
     public WishlistAdapter(Context context, ArrayList<WishlistList> arrayList, SQLiteDatabase db) {
         this.context = context;
@@ -56,6 +58,22 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.MyHold
         holder.oldPrice.setText(ConstantSp.PRICE_SYMBOL + arrayList.get(position).getOldPrice());
         holder.discountedPrice.setText(ConstantSp.PRICE_SYMBOL + arrayList.get(position).getNewPrice());
         holder.discount.setText(ConstantSp.PERCENTAGE_SYMBOL + arrayList.get(position).getDiscount());
+
+        holder.wishlistIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isWishlist){
+                    isWishlist = false;
+                    Toast.makeText(context, "Removed From Wishlist", Toast.LENGTH_SHORT).show();
+                    holder.wishlistIcon.setImageResource(R.drawable.wishlist_empty);
+                }
+                else{
+                    isWishlist = true;
+                    Toast.makeText(context, "Added To Wishlist", Toast.LENGTH_SHORT).show();
+                    holder.wishlistIcon.setImageResource(R.drawable.wishlist_fill);
+                }
+            }
+        });
 
     }
 
