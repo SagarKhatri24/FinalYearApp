@@ -3,6 +3,7 @@ package com.finalyearapp;
 public class ConstantSp {
 
     public static final String PRICE_SYMBOL= "₹";
+    public static final String PERCENTAGE_SYMBOL= "%";
 
     public static final String PREF = "pref";
 

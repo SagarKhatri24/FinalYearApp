@@ -59,10 +59,12 @@ public class WishlistActivity extends AppCompatActivity {
         userId = sp.getString(ConstantSp.USERID, "");
         productId = sp.getInt(ConstantSp.PRODUCTID, 0);
 
+        recyclerView = findViewById(R.id.wishlist_recycler);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(WishlistActivity.this));
 
         arrayList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM cart WHERE userId='" + sp.getString(ConstantSp.USERID, "") + "' ";
+        String selectQuery = "SELECT * FROM wishlist WHERE userId='" + sp.getString(ConstantSp.USERID, "") + "' ";
         Cursor cursor = db.rawQuery(selectQuery, null);
         Log.d("CART", String.valueOf(cursor.getCount()));
         if (cursor.getCount() > 0) {
@@ -86,8 +88,8 @@ public class WishlistActivity extends AppCompatActivity {
 
 
             WishlistAdapter adapter = new WishlistAdapter(WishlistActivity.this, arrayList, db);
-            recyclerView.setAdapter(WishlistAdapter);
+            recyclerView.setAdapter(adapter);
 
-
+        }
     }
 }
