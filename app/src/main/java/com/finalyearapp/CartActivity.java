@@ -22,7 +22,7 @@ public class CartActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     SharedPreferences sp;
     SQLiteDatabase db;
-
+    int sum = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
