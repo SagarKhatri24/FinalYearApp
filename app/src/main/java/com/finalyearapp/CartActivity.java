@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +23,9 @@ public class CartActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     SharedPreferences sp;
     SQLiteDatabase db;
-    int sum = 0;
+
+    TextView cartTotalAmount;
+    int cartTotal = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,8 @@ public class CartActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(CartActivity.this));
 
+        cartTotalAmount = findViewById(R.id.cart_total_amount);
+
 
         cartArrayList = new ArrayList<>();
         String selectQuery = "SELECT * FROM cart WHERE userId='" + sp.getString(ConstantSp.USERID, "") + "' ";
@@ -78,9 +83,12 @@ public class CartActivity extends AppCompatActivity {
                     }
                 }
                 cartArrayList.add(list);
+                cartTotal = cartTotal + Integer.parseInt(list.getNewPrice());
             }
             CartAdapter adapter = new CartAdapter(CartActivity.this, cartArrayList, db);
             recyclerView.setAdapter(adapter);
+
+            cartTotalAmount.setText(ConstantSp.PRICE_SYMBOL+String.valueOf(cartTotal));
 
 
         }
