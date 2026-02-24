@@ -65,32 +65,42 @@ public class CartActivity extends AppCompatActivity {
         Log.d("CART", String.valueOf(cursor.getCount()));
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                CartList list = new CartList();
-                list.setCartId(Integer.parseInt(cursor.getString(0)));
-                list.setQty(Integer.parseInt(cursor.getString(3)));
 
-                String selectProductQuery = "SELECT * FROM product WHERE productId='" + cursor.getString(2) + "'";
+                CartList list = new CartList();
+
+                int cartId = cursor.getInt(0);
+                int productId = cursor.getInt(2);
+                int qty = cursor.getInt(3);
+
+                list.setCartId(cartId);
+                list.setQty(qty);
+
+                String selectProductQuery = "SELECT * FROM product WHERE productId='" + productId + "'";
                 Cursor cursorProduct = db.rawQuery(selectProductQuery, null);
-                Log.d("CART", String.valueOf(cursorProduct.getCount()));
-                if (cursorProduct.getCount() > 0) {
-                    while (cursorProduct.moveToNext()) {
-                        list.setProductId(cursor.getInt(0));
-                        list.setName(cursorProduct.getString(3));
-                        list.setOldPrice(cursorProduct.getString(4));
-                        list.setNewPrice(cursorProduct.getString(5));
-                        list.setDiscount(cursorProduct.getString(6));
-                        list.setImage(cursorProduct.getString(7));
-                    }
+
+                if (cursorProduct.moveToFirst()) {
+
+                    list.setProductId(productId);
+                    list.setName(cursorProduct.getString(3));
+                    list.setOldPrice(cursorProduct.getString(4));
+                    list.setNewPrice(cursorProduct.getString(5));
+                    list.setDiscount(cursorProduct.getString(6));
+                    list.setImage(cursorProduct.getString(7));
+
+
+                    int price = Integer.parseInt(cursorProduct.getString(5));
+                    cartTotal += price * qty;
                 }
+
+                cursorProduct.close();
+
                 cartArrayList.add(list);
-                cartTotal = cartTotal + Integer.parseInt(list.getNewPrice());
             }
+
             CartAdapter adapter = new CartAdapter(CartActivity.this, cartArrayList, db);
             recyclerView.setAdapter(adapter);
 
-            cartTotalAmount.setText(ConstantSp.PRICE_SYMBOL+String.valueOf(cartTotal));
-
-
+            cartTotalAmount.setText(ConstantSp.PRICE_SYMBOL + cartTotal);
         }
     }
 }

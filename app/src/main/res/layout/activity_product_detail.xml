@@ -137,6 +137,15 @@
 
 
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/pay_now"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_button"
+                    app:backgroundTint="@null"
+                    android:text="Buy Now"
+                    />
             </LinearLayout>
 
         </LinearLayout>
