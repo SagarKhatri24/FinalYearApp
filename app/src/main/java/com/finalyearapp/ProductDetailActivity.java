@@ -304,14 +304,12 @@ public class ProductDetailActivity extends AppCompatActivity implements PaymentR
     public void onPaymentSuccess(String s, PaymentData paymentData) {
         Toast.makeText(this, "Payment Sucessfull", Toast.LENGTH_SHORT).show();
         Log.d("RESPONSE_SUCCESS","Transaction Id : "+s);
-
     }
 
     @Override
     public void onPaymentError(int i, String s, PaymentData paymentData) {
         Toast.makeText(this, "Payment Failed", Toast.LENGTH_SHORT).show();
         Log.d("RESPONSE_SUCCESS","Transaction Id : "+s);
-
     }
 
 
