@@ -35,6 +35,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SignupActivity extends AppCompatActivity {
 
     Button signup;
@@ -54,16 +58,15 @@ public class SignupActivity extends AppCompatActivity {
 
     ProgressDialog pd;
 
+    ApiInterface apiInterface;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+
         setContentView(R.layout.activity_signup);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         db = openOrCreateDatabase("FinalApp.db",MODE_PRIVATE,null);
         String tableQuery = "CREATE TABLE IF NOT EXISTS USERS(USERID INTEGER PRIMARY KEY AUTOINCREMENT,NAME VARCHAR(100),EMAIL VARCHAR(50),CONTACT BIGINT(10),PASSWORD VARCHAR(20),GENDER VARCHAR(10),CITY VARCHAR(50))";
@@ -196,8 +199,24 @@ public class SignupActivity extends AppCompatActivity {
 //                        onBackPressed();
 //                    }
 
+
+
+
+//                    if(new ConnectionDetector(SignupActivity.this).isConnectingToInternet()){
+//                        new SignupTask().execute();
+//                    }
+//                    else{
+//                        new ConnectionDetector(SignupActivity.this).connectiondetect();
+//                    }
+
+
+
                     if(new ConnectionDetector(SignupActivity.this).isConnectingToInternet()){
-                        new SignupTask().execute();
+                        pd = new ProgressDialog(SignupActivity.this);
+                        pd.setMessage("Please Wait...");
+                        pd.setCancelable(false);
+                        pd.show();
+                        doSignupRetrofit();
                     }
                     else{
                         new ConnectionDetector(SignupActivity.this).connectiondetect();
@@ -205,6 +224,44 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void doSignupRetrofit() {
+        Call<GetSignupData> call = apiInterface.getSignupData(
+                name.getText().toString(),
+                email.getText().toString(),
+                contact.getText().toString(),
+                password.getText().toString(),
+                sGender,
+                sCity
+        );
+
+        call.enqueue(new Callback<GetSignupData>() {
+            @Override
+            public void onResponse(Call<GetSignupData> call, Response<GetSignupData> response) {
+                pd.dismiss();
+                if(response.code() == 200){
+                    if(response.body().status){
+                        new CommonMethod(SignupActivity.this,response.body().message);
+                        onBackPressed();
+                    }
+                    else{
+                        new CommonMethod(SignupActivity.this,response.body().message);
+                    }
+                }
+                else{
+                    new CommonMethod(SignupActivity.this,"Server Error Code : "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetSignupData> call, Throwable t) {
+                pd.dismiss();
+                new CommonMethod(SignupActivity.this,t.getMessage());
+                Log.d("RESPONSE",t.getMessage());
+            }
+        });
+
     }
 
     private class SignupTask extends AsyncTask<Void, Void, String>{
